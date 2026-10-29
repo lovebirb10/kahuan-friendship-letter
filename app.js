@@ -1,5 +1,6 @@
-import {questions,dimensions,calculateResult} from './data.js?v=18-4';
-import {resultCopy} from './result-copy.js?v=18-4';
+import {mascotMarkup,toggleMascot} from './mascot.js?v=19-1';
+import {questions,dimensions,calculateResult} from './data.js?v=19-1';
+import {resultCopy} from './result-copy.js?v=19-1';
 
 const main=document.querySelector('main');
 const KEY='kahuan-letter-v2-final18';
@@ -20,7 +21,7 @@ function navigate(page){if(location.hash===`#${page}`)render();else location.has
 function focusMain(){main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
 function home(){
  const n=count();
- return `<section class="hero"><div class="hero-copy"><h1>如果是你，<br>会怎样靠近？</h1><p class="intro">18 个友情情境，<br class="mobile-break">遇见你在关系里的样子。</p><button class="primary start" data-action="start">${n?(complete()?'查看我的回信':'继续这封来信'):'开始这封来信'} <span aria-hidden="true">→</span></button><p class="micro">${n?`已完成 ${n} / 18 题 · 答案留在这台设备`:'约 3–5 分钟 · 没有标准答案'}</p></div>${envelope}</section><section class="steps" aria-label="测试步骤"><div><span>01</span>代入情境</div><i></i><div><span>02</span>跟随直觉</div><i></i><div><span>03</span>收到回信</div></section><section class="home-note"><h2>同一段故事，<br>也可以有你的答案。</h2><div><p>你有没有一个曾经密不可分的好朋友？现在呢？还联系吗？有没有从无话不谈，走到连名字都不好提？</p><p>如果时光真的能倒流，回到那个你们刚认识的那天，你还会选择去认识TA吗？请根据你的真实心路历程，选出最贴合你本能反应的选项。</p><button class="text-button" data-page="about">读一读测试说明 <span aria-hidden="true">↗</span></button></div></section>`;
+ return `<section class="hero"><div class="hero-copy"><h1>如果是你，<br>会怎样靠近？</h1><p class="intro">18 个友情情境，<br class="mobile-break">遇见你在关系里的样子。</p><button class="primary start" data-action="start">${n?(complete()?'查看我的回信':'继续这封来信'):'开始这封来信'} <span aria-hidden="true">→</span></button><p class="micro">${n?`已完成 ${n} / 18 题 · 答案留在这台设备`:'约 3–5 分钟 · 没有标准答案'}</p></div>${mascotMarkup()}</section><section class="steps" aria-label="测试步骤"><div><span>01</span>代入情境</div><i></i><div><span>02</span>跟随直觉</div><i></i><div><span>03</span>收到回信</div></section><section class="home-note"><h2>同一段故事，<br>也可以有你的答案。</h2><div><p>你有没有一个曾经密不可分的好朋友？现在呢？还联系吗？有没有从无话不谈，走到连名字都不好提？</p><p>如果时光真的能倒流，回到那个你们刚认识的那天，你还会选择去认识TA吗？请根据你的真实心路历程，选出最贴合你本能反应的选项。</p><button class="text-button" data-page="about">读一读测试说明 <span aria-hidden="true">↗</span></button></div></section>`;
 }
 function quiz(){
  const q=questions[current];
@@ -57,6 +58,7 @@ document.addEventListener('click',e=>{
  if(button.dataset.page){navigate(button.dataset.page);return;}
  if(button.dataset.question!==undefined){current=Number(button.dataset.question);save();navigate('quiz');return;}
  switch(button.dataset.action){
+  case 'mascot-toggle': toggleMascot(button);break;
   case 'start': if(complete())navigate('result');else navigate('quiz');break;
   case 'next': if(answers[current]===null)return;if(current<17){current++;save();render();}else navigate('review');break;
   case 'prev': if(current){current--;save();render();}else navigate('home');break;
