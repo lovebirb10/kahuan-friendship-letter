@@ -1,7 +1,9 @@
-import {mascotMarkup,toggleMascot} from './mascot.js?v=19-3';
-import {questions,dimensions,calculateResult} from './data.js?v=19-3';
-import {resultCopy} from './result-copy.js?v=19-3';
+import {mascotMarkup,toggleMascot} from './mascot.js?v=19-4';
+import {questions,dimensions,calculateResult} from './data.js?v=19-4';
+import {resultCopy} from './result-copy.js?v=19-4';
 
+// 兼容旧 HTML 缓存：即使外壳仍带有已移除的导航，也立即清理。
+document.querySelectorAll('nav [data-page="sources"]').forEach(node=>node.remove());
 const main=document.querySelector('main');
 const KEY='kahuan-letter-v2-final18';
 let answers=Array(18).fill(null), current=0, storageAvailable=true;
@@ -35,6 +37,7 @@ function about(){return `<article class="reading"><p class="section-label">关�
 
 function render(){
  let page=location.hash.slice(1)||'home';
+ if(page==='sources'){history.replaceState(null,'',location.pathname+location.search+'#home');page='home';}
  if(page==='result'&&!complete())page='review';
  const views={home,quiz,review,result,about};
  main.innerHTML=(views[page]||home)();
